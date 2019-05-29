@@ -6,13 +6,20 @@ public class BEU_CharacterMovement : MonoBehaviour
 {
     float xAxis;
     float yAxis;
+    Animator anim;
+    
+    public float movSpeedX = 1f;
+    public float movSpeedY = 0.5f;
 
-    public float movSpeed = 1f;
+    private void Start()
+    {
+        anim = this.GetComponent<Animator>();
+    }
 
     void Update()
     {
-        xAxis = Input.GetAxis("Horizontal") * movSpeed * Time.deltaTime;
-        yAxis = Input.GetAxis("Vertical") * movSpeed * Time.deltaTime;
+        xAxis = Input.GetAxis("Horizontal") * movSpeedX * Time.deltaTime;
+        yAxis = Input.GetAxis("Vertical") * movSpeedY * Time.deltaTime;
 
         if (transform.position.y < -1.5f && yAxis < 0)
         {
