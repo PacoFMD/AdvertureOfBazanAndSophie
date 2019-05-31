@@ -4,68 +4,84 @@ using UnityEngine;
 
 public class BEU_CharacterMovement : MonoBehaviour
 {
-    float xAxis;
-    float yAxis;
-    Animator anim;
-    
+    public Animator anim;
+
+    private float xAxis;
+    private float yAxis;
     public float movSpeedX = 1f;
     public float movSpeedY = 0.5f;
+
+    public int playerID;
+
+    private bool canMoveRight;
+    private bool canMoveLeft;
+    private bool canMoveUp;
+    private bool canMoveDown;
+
+    private float collisionDistance = 0.5f;
+    private LayerMask layerMask;
 
     private void Start()
     {
         anim = this.GetComponent<Animator>();
+        layerMask = LayerMask.GetMask("Collisions");
     }
 
     void Update()
     {
-        xAxis = Input.GetAxis("Horizontal") * movSpeedX * Time.deltaTime;
-        yAxis = Input.GetAxis("Vertical") * movSpeedY * Time.deltaTime;
+        xAxis = Input.GetAxis("Horizontal" + playerID.ToString()) * movSpeedX * Time.deltaTime;
+        yAxis = Input.GetAxis("Vertical" + playerID.ToString()) * movSpeedY * Time.deltaTime;
 
-        if (transform.position.y < -1.5f && yAxis < 0)
+        RaycastHit2D hit;
+
+        /// Optimizar para que solo cheque si te estas moviendo en esa direccion, en vez de checar todo el tiempo a todas las direcciones.
+
+        if (xAxis > 0)
         {
-            yAxis = 0;
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.right) * collisionDistance, Color.green);
+            if (hit = (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), collisionDistance, layerMask)))
+            {
+                if (hit.collider.tag == "Floor" || hit.collider.tag == "Wall" || hit.collider.tag == "Object")
+                {
+                    xAxis = 0;
+                }
+            }
+        }
+        else if (xAxis < 0)
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.left) * collisionDistance, Color.green);
+            if (hit = (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.left), collisionDistance, layerMask)))
+            {
+                if (hit.collider.tag == "Floor" || hit.collider.tag == "Wall" || hit.collider.tag == "Object")
+                {
+                    xAxis = 0;
+                }
+            }
         }
 
+        if (yAxis > 0)
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.up) * collisionDistance, Color.green);
+            if (hit = (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), collisionDistance, layerMask)))
+            {
+                if (hit.collider.tag == "Floor" || hit.collider.tag == "Wall" || hit.collider.tag == "Object")
+                {
+                    yAxis = 0;
+                }
+            }
+        }
+        else if (yAxis < 0)
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.down) * collisionDistance, Color.green);
+            if (hit = (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), collisionDistance, layerMask)))
+            {
+                if (hit.collider.tag == "Floor" || hit.collider.tag == "Wall" || hit.collider.tag == "Object")
+                {
+                    yAxis = 0;
+                }
+            }
+        }
+        
         transform.Translate(xAxis, yAxis, 0);
     }
-
-    /*float upDownAngle = 55;
-    float stairsAngle = -45;
-    Vector3 upDownDirection;
-    Vector3 stairsDirection;
-    float speed = 3;
-    public bool onStairs = false;
-
-    void Start()
-    {
-        // turn angles into direction vectors
-        upDownDirection = new Vector3(Mathf.Cos(upDownAngle * Mathf.Deg2Rad), Mathf.Sin(upDownAngle * Mathf.Deg2Rad));
-        stairsDirection = new Vector3(Mathf.Cos(stairsAngle * Mathf.Deg2Rad), Mathf.Sin(stairsAngle * Mathf.Deg2Rad));
-    }
-
-    void Update()
-    {
-        // correct for diagonal movement with normalized
-        var moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-
-        if (moveInput.y != 0)
-        {
-            // apply with the new up/down direction vector instead of Vector3.up
-            transform.position += moveInput.y * upDownDirection * speed * Time.deltaTime;
-        }
-
-        if (moveInput.x != 0)
-        {
-            // find some way to detect if on stairs
-            if (onStairs == true)
-            {
-                transform.position += moveInput.x * stairsDirection * speed * Time.deltaTime;
-            }
-            else
-            {
-                // else move normally
-                transform.position += moveInput.x * Vector3.right * speed * Time.deltaTime;
-            }
-        }
-    }*/
 }
