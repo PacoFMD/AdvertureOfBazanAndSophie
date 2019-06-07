@@ -7,6 +7,8 @@ TagManager:
   - Floor
   - Wall
   - Object
+  - HitPoint
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ public class BEU_CharacterMovement : MonoBehaviour
 {
     public Animator anim;
     public SpriteRenderer sprite;
+    public GameObject hitPoint;
 
     private float xAxis;
     private float yAxis;
@@ -21,9 +22,15 @@ public class BEU_CharacterMovement : MonoBehaviour
     private bool canMoveUp;
     private bool canMoveDown;
 
+    private float hitPointDisplacement = 0.365f;
+
     private float collisionDistance = 0.5f;
     private LayerMask layerMask;
 
+    private void Awake()
+    {
+        hitPointDisplacement = hitPoint.transform.localPosition.x;
+    }
 
     private void Start()
     {
@@ -39,10 +46,12 @@ public class BEU_CharacterMovement : MonoBehaviour
         if(xAxis > 0.1)
         {
             sprite.flipX = false;
+            hitPoint.transform.position = new Vector3(transform.position.x + hitPointDisplacement, hitPoint.transform.position.y, transform.position.z);
         }
         else if (xAxis < -0.1)
         {
             sprite.flipX = true;
+            hitPoint.transform.position = new Vector3(transform.position.x - hitPointDisplacement, hitPoint.transform.position.y, transform.position.z);
         }
 
         if (Input.GetButtonDown("X" + playerID.ToString()))
