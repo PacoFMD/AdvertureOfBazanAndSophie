@@ -24,7 +24,7 @@ public class BEU_CharacterMovement : MonoBehaviour
 
     private float hitPointDisplacement = 0.365f;
 
-    private float collisionDistance = 0.5f;
+    private float collisionDistance = 1f;
     private LayerMask layerMask;
 
     private void Awake()

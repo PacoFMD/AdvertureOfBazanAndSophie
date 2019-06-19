@@ -45,6 +45,7 @@ public class BEU_EnemyStatus : MonoBehaviour
         {
             SetDamage(collision.transform.parent.GetComponent<BEU_PlayerStatus>().GetAttackPoint());
             Debug.Log("Me pegan ayuda!");
+            GetComponent<BEU_EnemyMovement>().targetAssign = false;
         }
     }
 }
