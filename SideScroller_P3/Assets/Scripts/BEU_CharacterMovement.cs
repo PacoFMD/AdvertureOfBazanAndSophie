@@ -105,7 +105,7 @@ public class BEU_CharacterMovement : MonoBehaviour
             if (yAxis > 0)
             {
                 Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.up) * collisionDistance, Color.green);
-                if (hit = (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), collisionDistance, layerMask)))
+                if (hit = (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.up), collisionDistance, layerMask)))
                 {
                     if (hit.collider.tag == "Floor" || hit.collider.tag == "Wall" || hit.collider.tag == "Object")
                     {
@@ -125,7 +125,7 @@ public class BEU_CharacterMovement : MonoBehaviour
                 }
             }
 
-            transform.Translate(xAxis, yAxis, 0);
+            transform.Translate(xAxis, yAxis, yAxis); // CUIADO
         }
     }
 }
